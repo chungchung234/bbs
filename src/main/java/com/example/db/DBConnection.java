@@ -1,4 +1,4 @@
-package db;
+package com.example.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,7 +8,7 @@ public class DBConnection {
 
 	public static void initConnection() {		
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");			
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			System.out.println("Driver Loading Success");
 		} catch (ClassNotFoundException e) {			
 			e.printStackTrace();
@@ -19,7 +19,7 @@ public class DBConnection {
 		
 		String url = "jdbc:mysql://localhost:3306/mydb";
 		String user = "root";
-		String password = "1234";
+		String password = "1114";
 		
 		Connection conn = null;
 

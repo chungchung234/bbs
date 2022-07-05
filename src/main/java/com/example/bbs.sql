@@ -19,5 +19,3 @@ alter table bbs
 add
 foreign key(id) references member(id);
 
-
-

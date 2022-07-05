@@ -1,3 +1,6 @@
+use mydb;
+
+drop table member;
 
 create table member(
 	id varchar(50) primary key,
