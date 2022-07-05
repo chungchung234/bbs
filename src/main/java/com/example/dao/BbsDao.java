@@ -417,8 +417,66 @@ public class BbsDao {
 
 	public boolean answer(int seq, BbsDto bbs){
 
+		String sql1 = " UPDATE bbs " +
+				" SET step+1" +
+				" WHERE ref = (SELECT ref FROM (SELECT ref FROM bbs a WHERE seq=?) A) " +
+				" AND step > (SELECT step FROM (SELECT step FROM bbs b WHERE seq=?) B) "
+				;
+		String sql2 = " INSERT INTO bbs (id, " +
+				" ref, step, depth, " +
+				" title, content, wdate, del ,readcount) " +
+				" VALUES(?, " +
+				"  (SELECT ref FROM bbs a WHERE seq = ?), " +
+				" (SELECT step FROM bbs b WHERE seq = ?)+1, " +
+				" (SELECT deth FROM bbs c WHERE seq = ?)+1, " +
+				" ?, ?, now(), 0,0) ";
 
-		return true;
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		int count = 0;
+
+
+		try {
+			conn = DBConnection.getConnection();
+			conn.setAutoCommit(false);
+
+			psmt = conn.prepareStatement(sql1);
+			psmt.setInt(1, seq);
+			psmt.setInt(2, seq);
+
+			count = psmt.executeUpdate();
+
+
+			// psmt reset
+			psmt.clearParameters();
+
+			psmt = conn.prepareStatement(sql2);
+			psmt.setString(1, bbs.getId());
+			psmt.setInt(2, seq);
+			psmt.setInt(3, seq);
+			psmt.setInt(4, seq);
+			psmt.setString(5, bbs.getTitle());
+			psmt.setString(6, bbs.getContent());
+
+			count += psmt.executeUpdate();
+
+			conn.commit();
+
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException ex) {
+e.printStackTrace();			}
+		}finally {
+			try {
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {
+				e.printStackTrace();			}
+			DBClose.close(conn, psmt, null);
+			}
+
+
+		return count>0?true:false;
 	}
 	
 	

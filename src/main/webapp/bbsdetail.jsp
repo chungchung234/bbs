@@ -86,6 +86,8 @@ if(dto.getId().equals(mem.getId())){
 <%
 }
 %>
+	<button type = "button" onclick="answerBbs(<%=dto.getSeq()%>)">댓글</button>
+
 <button type="button" onclick="location.href='bbslist.jsp'">글목록</button>
 
 </div>
@@ -96,6 +98,9 @@ function updateBbs( seq ) {
 }
 function deleteBbs( seq ) {
 	location.href = "bbsdelete.jsp?seq=" + seq;
+}
+function answerBbs(seq){
+	location.href = "answer.jsp?seq="+seq;
 }
 
 </script>
