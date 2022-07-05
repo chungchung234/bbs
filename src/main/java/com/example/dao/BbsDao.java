@@ -330,9 +330,9 @@ public class BbsDao {
 	}
 	
 	public void readcount(int seq) {
-		String sql = " UPDATE BBS "
-				   + " SET READCOUNT=READCOUNT+1 "
-				   + " WHERE SEQ=? ";
+		String sql = " UPDATE bbs "
+				   + " SET readcount=readcount+1 "
+				   + " WHERE seq=? ";
 		
 		Connection conn = null;			
 		PreparedStatement psmt = null;	
